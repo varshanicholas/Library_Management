@@ -13,6 +13,11 @@ namespace Library_Management
 
             // Add services to the container.
             builder.Services.AddControllers();
+ 
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+          //  builder.Services.AddEndpointsApiExplorer();
+           
+
 
             builder.Services.AddControllersWithViews()
              .AddJsonOptions(
@@ -26,6 +31,21 @@ namespace Library_Management
                  options.JsonSerializerOptions.WriteIndented = true;
              });
 
+
+
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+
+            builder.Services.AddDbContext<LibraryManagementContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("PropelAug24Connection")));
+
+            builder.Services.AddScoped<IBookRepository , BookRepository >();
+
+
+
             // Connection string as Middleware
             builder.Services.AddDbContext<LibraryManagementContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("PropelAug24Connection")));
@@ -36,6 +56,7 @@ namespace Library_Management
 
             // Register the IReportRepository and its implementation
             builder.Services.AddScoped<IReportRepository, ReportRepository>();
+
             var app = builder.Build();
 
 

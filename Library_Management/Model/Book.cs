@@ -17,9 +17,9 @@ public partial class Book
 
     public int AvailableCopies { get; set; }
 
-    public virtual Author Author { get; set; } = null!;
+    public virtual Author? Author { get; set; } = null!;
 
-    public virtual ICollection<BorrowTransaction> BorrowTransactions { get; set; } = new List<BorrowTransaction>();
+    public virtual ICollection<BorrowTransaction>? BorrowTransactions { get; set; } = new List<BorrowTransaction>();
 
-    public virtual Category Category { get; set; } = null!;
+    public virtual Category? Category { get; set; } = null!;
 }
