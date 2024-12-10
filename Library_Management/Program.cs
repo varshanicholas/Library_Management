@@ -1,4 +1,5 @@
 using Library_Management.Model;
+using Library_Management.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library_Management
@@ -13,7 +14,7 @@ namespace Library_Management
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+          //  builder.Services.AddEndpointsApiExplorer();
            
 
             //3-json format
@@ -30,8 +31,18 @@ namespace Library_Management
              });
             //connection string as Middleware
 
+
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+
             builder.Services.AddDbContext<LibraryManagementContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("PropelAug24Connection")));
+
+            builder.Services.AddScoped<IBookRepository , BookRepository >();
+
 
             var app = builder.Build();
 
