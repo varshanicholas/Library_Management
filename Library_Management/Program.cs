@@ -1,5 +1,6 @@
 using LibraryManagement.Repositories;
 using Library_Management.Model;
+using Library_Management.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library_Management
@@ -11,11 +12,8 @@ namespace Library_Management
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-                     
 
-            //3-json format
             builder.Services.AddControllersWithViews()
              .AddJsonOptions(
              options =>
@@ -27,21 +25,26 @@ namespace Library_Management
                  System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
                  options.JsonSerializerOptions.WriteIndented = true;
              });
-            //connection string as Middleware
 
+            // Connection string as Middleware
             builder.Services.AddDbContext<LibraryManagementContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("PropelAug24Connection")));
+
+
+            // Register repository and service layer
+            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+
             // Register the IReportRepository and its implementation
             builder.Services.AddScoped<IReportRepository, ReportRepository>();
             var app = builder.Build();
 
-           
+
+            var app = builder.Build();
 
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
